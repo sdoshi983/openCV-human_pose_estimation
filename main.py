@@ -24,3 +24,4 @@ img = cv2.imread('assets/person.jpg')
 def poseEstimation(frame):
     frameWidth = frame.shape[1]
     frameHeight = frame.shape[0]
+    net.setInput(cv2.dnn.blobFromImage(frame, 1.0, (inWidth, inHeight), (127.5, 127.5, 127.5), swapRB=True, crop=False))
