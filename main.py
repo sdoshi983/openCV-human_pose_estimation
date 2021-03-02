@@ -1,5 +1,6 @@
 import cv2
 import matplotlib.pyplot as plt
+from pip._vendor.certifi.__main__ import args
 
 net = cv2.dnn.readNetFromTensorflow('assets/graph_opt.pb')
 
@@ -40,3 +41,8 @@ def poseEstimation(frame):
         # we just find a global one. However only a single pose at the same time
         # could be detected this way.
         _, conf, _, point = cv2.minMaxLoc(heatMap)
+        x = (frameWidth * point[0]) / out.shape[3]
+        y = (frameHeight * point[1]) / out.shape[2]
+        # Add a point if it's confidence is higher than threshold.
+        points.append((int(x), int(y)) if conf > args.thr else None)
+
