@@ -36,3 +36,7 @@ def poseEstimation(frame):
         # Slice heatmap of corresponging body's part.
         heatMap = out[0, i, :, :]
 
+        # Originally, we try to find all the local maximums. To simplify a sample
+        # we just find a global one. However only a single pose at the same time
+        # could be detected this way.
+        _, conf, _, point = cv2.minMaxLoc(heatMap)
