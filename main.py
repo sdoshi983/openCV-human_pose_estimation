@@ -46,3 +46,6 @@ def poseEstimation(frame):
         # Add a point if it's confidence is higher than threshold.
         points.append((int(x), int(y)) if conf > args.thr else None)
 
+    for pair in POSE_PAIRS:
+        partFrom = pair[0]
+        partTo = pair[1]
