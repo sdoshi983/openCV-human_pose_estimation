@@ -1,6 +1,14 @@
 import cv2
 import matplotlib.pyplot as plt
-from pip._vendor.certifi.__main__ import args
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--input', help='Path to image or video. Skip to capture frames from camera')
+parser.add_argument('--thr', default=0.2, type=float, help='Threshold value for pose parts heat map')
+parser.add_argument('--width', default=368, type=int, help='Resize input to specific width.')
+parser.add_argument('--height', default=368, type=int, help='Resize input to specific height.')
+
+args = parser.parse_args()
 
 net = cv2.dnn.readNetFromTensorflow('assets/graph_opt.pb')
 
@@ -59,3 +67,14 @@ def poseEstimation(frame):
             cv2.line(frame, points[idFrom], points[idTo], (0, 255, 0), 3)
             cv2.ellipse(frame, points[idFrom], (3, 3), 0, 0, 360, (0, 0, 255), cv2.FILLED)
             cv2.ellipse(frame, points[idTo], (3, 3), 0, 0, 360, (0, 0, 255), cv2.FILLED)
+
+    t, _ = net.getPerfProfile()
+    freq = cv2.getTickFrequency() / 1000
+    cv2.putText(frame, '%.2fms' % (t / freq), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
+
+    return frame
+
+
+estimatedImage = poseEstimation(img)
+cv2.imshow('x', cv2.cvtColor(estimatedImage, cv2.COLOR_BGR2RGB))
+cv2.waitKey(0)
