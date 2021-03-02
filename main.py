@@ -32,3 +32,7 @@ def poseEstimation(frame):
     assert (len(BODY_PARTS) == out.shape[1])
 
     points = []
+    for i in range(len(BODY_PARTS)):
+        # Slice heatmap of corresponging body's part.
+        heatMap = out[0, i, :, :]
+
