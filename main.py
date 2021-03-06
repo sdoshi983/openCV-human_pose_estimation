@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import argparse
 
 cap = cv2.VideoCapture(0)
-
+cap.set(cv2.CAP_PROP_FPS, 10)
 cap.set(3, 800)
 cap.set(4, 800)
 
