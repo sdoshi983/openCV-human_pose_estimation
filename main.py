@@ -2,6 +2,11 @@ import cv2
 import matplotlib.pyplot as plt
 import argparse
 
+cap = cv2.VideoCapture(0)
+
+cap.set(3, 800)
+cap.set(4, 800)
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--input', help='Path to image or video. Skip to capture frames from camera')
 parser.add_argument('--thr', default=0.2, type=float, help='Threshold value for pose parts heat map')
@@ -27,10 +32,12 @@ POSE_PAIRS = [ ["Neck", "RShoulder"], ["Neck", "LShoulder"], ["RShoulder", "RElb
                ["LHip", "LKnee"], ["LKnee", "LAnkle"], ["Neck", "Nose"], ["Nose", "REye"],
                ["REye", "REar"], ["Nose", "LEye"], ["LEye", "LEar"] ]
 
-img = cv2.imread('assets/person.jpg')
+while cv2.waitKey(1) < 0:
+    bool, frame = cap.read()
+    if not bool:
+        cv2.waitKey()
+        break
 
-
-def poseEstimation(frame):
     frameWidth = frame.shape[1]
     frameHeight = frame.shape[0]
     net.setInput(cv2.dnn.blobFromImage(frame, 1.0, (inWidth, inHeight), (127.5, 127.5, 127.5), swapRB=True, crop=False))
@@ -72,9 +79,4 @@ def poseEstimation(frame):
     freq = cv2.getTickFrequency() / 1000
     cv2.putText(frame, '%.2fms' % (t / freq), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0))
 
-    return frame
-
-
-estimatedImage = poseEstimation(img)
-cv2.imshow('x', cv2.cvtColor(estimatedImage, cv2.COLOR_BGR2RGB))
-cv2.waitKey(0)
+    cv2.imshow('Human Body', frame)
