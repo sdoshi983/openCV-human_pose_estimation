@@ -2,10 +2,11 @@ import cv2
 import matplotlib.pyplot as plt
 import argparse
 
-cap = cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_FPS, 10)   # setting fps
+cap = cv2.VideoCapture("assets/sample.mp4")
+cap.set(cv2.CAP_PROP_FPS, 1)   # setting fps
 cap.set(3, 800)
 cap.set(4, 800)
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--input', help='Path to image or video. Skip to capture frames from camera')
